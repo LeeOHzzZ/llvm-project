@@ -186,8 +186,14 @@ static FailureOr<TiledLinalgOp>
 tileLinalgOpImpl(RewriterBase &b, LinalgOp op, ValueRange tileSizes,
                  const LinalgTilingOptions &options) {
   auto nLoops = op.getNumLoops();
-  // Initial tile sizes may be too big, only take the first nLoops.
-  tileSizes = tileSizes.take_front(nLoops);
+  // // Initial tile sizes may be too big, only take the first nLoops.
+  // tileSizes = tileSizes.take_front(nLoops);
+  // changes to take the last nLoops to pass the register tile size
+  llvm::outs() << "**Customization Warning**: "
+               << "[linalg-Tiling] tiling sizes is changed to get the last 'nLoops' of "
+               << "sizes instead of taking from the front to ensure the same "
+               << "tile size in linalg ops with different numbers of loops" << "\n";
+  tileSizes = tileSizes.take_back(nLoops);
 
   if (llvm::all_of(tileSizes, isZero)) {
     TiledLinalgOp tiledOp;

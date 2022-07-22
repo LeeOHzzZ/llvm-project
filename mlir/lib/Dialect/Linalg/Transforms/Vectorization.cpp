@@ -43,7 +43,7 @@ using namespace mlir::linalg;
 #define DEBUG_TYPE "linalg-vectorization"
 
 #define DBGS() (llvm::dbgs() << '[' << DEBUG_TYPE << "] ")
-#define LDBG(X) LLVM_DEBUG(DBGS() << X)
+#define LDBG(X) LLVM_DEBUG(DBGS() << X << '\n')
 
 /// Try to vectorize `convOp` as a convolution.
 static FailureOr<Operation *> vectorizeConvolution(OpBuilder &b,
@@ -523,7 +523,7 @@ vectorizeAsLinalgGeneric(OpBuilder &b, LinalgOp linalgOp,
       return failure();
     }
     if (result.status == VectorizationStatus::NewOp) {
-      LDBG("new vector op: " << *result.newOp;);
+      LDBG("new vector op: " << *result.newOp);
       bvm.map(op.getResults(), result.newOp->getResults());
     }
   }
