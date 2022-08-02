@@ -297,7 +297,14 @@ struct LinalgStrategyVectorizePass
                  << "[LinalgStrategyPasses.cpp] "
                  << "Disable vector transfer permutation map lowering patterns "
                  << "to avoid generate ill-formed vector shape for g3dsp" << "\n";
-    vector::populateVectorReductionToContractPatterns(vectorizationPatterns);
+
+    // vector::populateVectorReductionToContractPatterns(vectorizationPatterns);
+    llvm::outs() << "**Customization Warning** "
+                 << "[LinalgStrategyPasses.cpp] "
+                 << "Disable vector reduction to contraction lowering patterns "
+                 << "to avoid generated ill-formed vector code after vectorization" 
+                 << "\n";
+                 
     vectorizationPatterns.add<linalg::LinalgCopyVTRForwardingPattern,
                               linalg::LinalgCopyVTWForwardingPattern>(
         funcOp.getContext(), /*benefit=*/2);
